@@ -77,6 +77,11 @@
           for debugging is to use Super Dev Mode -->
           <style>OBF</style>
           <strict>true</strict>
+          <!-- Widget set compilation.
+                      Possible values are: local, cdn, fetch -->
+          <widgetsetMode>local</widgetsetMode>
+          <!--<widgetsetMode>cdn</widgetsetMode>-->
+          <!--<widgetsetMode>fetch</widgetsetMode>-->
         </configuration>
         <executions>
           <execution>

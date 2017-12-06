@@ -21,7 +21,7 @@
     <maven.compiler.source>1.8</maven.compiler.source>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-    <vaadin.version>8.1.6</vaadin.version>
+    <vaadin.version>8.1.7</vaadin.version>
     <javax.servlet-api.version>4.0.0</javax.servlet-api.version>
 
     <ddi.version>1.0.0</ddi.version>
@@ -32,9 +32,9 @@
 
     <!--TDD jUnit5-->
     <junit.version>4.12</junit.version>
-    <junit.jupiter.version>5.0.2</junit.jupiter.version>
-    <junit.vintage.version>${junit.version}.0</junit.vintage.version>
-    <junit.platform.version>1.0.0-RC3</junit.platform.version>
+    <junit.jupiter.version>5.1.0-M1</junit.jupiter.version>
+    <junit.vintage.version>5.1.0-M1</junit.vintage.version>
+    <junit.platform.version>1.1.0-M1</junit.platform.version>
 
     <!--<shiro.version>1.4.0</shiro.version>-->
     <shiro.version>1.3.2</shiro.version>
@@ -48,40 +48,20 @@
     <flyway.password>postgres</flyway.password>
     <flyway.schemas>public</flyway.schemas>
     <flyway.driver>org.postgresql.Driver</flyway.driver>
-    <flyway.url>jdbc:postgresql://localhost:5432/postgres</flyway.url>
+    <flyway.url>jdbc:postgresql://${docker.host.ip}:5432/postgres</flyway.url>
+
     <speedment.version>3.0.18</speedment.version>
+
+
+    <postgresql.version>42.1.4</postgresql.version>
   </properties>
 
   <repositories>
-    <!--Vaadin Snapshot Repos-->
     <repository>
       <id>vaadin-addons</id>
       <url>http://maven.vaadin.com/vaadin-addons</url>
     </repository>
-    <repository>
-      <id>vaadin-prereleases</id>
-      <url>http://maven.vaadin.com/vaadin-prereleases</url>
-    </repository>
-    <repository>
-      <id>vaadin-snapshots</id>
-      <name>Vaadin snapshot repository</name>
-      <url>https://oss.sonatype.org/content/repositories/vaadin-snapshots/</url>
-    </repository>
-
-    <!--Testcontainers SNAPSHOT-->
-    <repository>
-      <id>jitpack.io</id>
-      <url>https://jitpack.io</url>
-    </repository>
   </repositories>
-
-  <pluginRepositories>
-    <pluginRepository>
-      <id>vaadin-prereleases</id>
-      <url>http://maven.vaadin.com/vaadin-prereleases</url>
-    </pluginRepository>
-  </pluginRepositories>
-
 
   <dependencyManagement>
     <dependencies>
@@ -95,6 +75,16 @@
       <dependency>
         <groupId>${project.groupId}</groupId>
         <artifactId>helloworld-modules-trainer-backend</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>${project.groupId}</groupId>
+        <artifactId>helloworld-modules-trainer-persistence-core</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>${project.groupId}</groupId>
+        <artifactId>helloworld-modules-trainer-persistence-generated</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
@@ -130,7 +120,7 @@
       <dependency>
         <groupId>com.vaadin</groupId>
         <artifactId>vaadin-testbench</artifactId>
-        <version>5.1.0</version>
+        <version>5.1.1</version>
         <scope>test</scope>
       </dependency>
 
@@ -171,12 +161,12 @@
       <dependency>
         <groupId>com.zaxxer</groupId>
         <artifactId>HikariCP</artifactId>
-        <version>2.7.3</version>
+        <version>2.7.4</version>
       </dependency>
       <dependency>
         <groupId>org.postgresql</groupId>
         <artifactId>postgresql</artifactId>
-        <version>42.1.4</version>
+        <version>${postgresql.version}</version>
       </dependency>
       <dependency>
         <groupId>org.flywaydb</groupId>
@@ -235,6 +225,15 @@
         <version>${javax.servlet-api.version}</version>
         <scope>provided</scope>
       </dependency>
+
+
+      <!--Shiro Bug Dep-->
+      <dependency>
+        <groupId>commons-beanutils</groupId>
+        <artifactId>commons-beanutils-core</artifactId>
+        <version>1.8.3</version>
+      </dependency>
+
     </dependencies>
   </dependencyManagement>
 
@@ -246,24 +245,14 @@
       <artifactId>rapidpm-dynamic-cdi-modules-core</artifactId>
     </dependency>
 
-    <!--security -->
+    <!--TDD-->
     <dependency>
-      <groupId>org.apache.shiro</groupId>
-      <artifactId>shiro-web</artifactId>
-      <version>${shiro.version}</version>
-      <exclusions>
-        <exclusion>
-          <groupId>org.slf4j</groupId>
-          <artifactId>slf4j-api</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>commons-beanutils</groupId>
-          <artifactId>commons-beanutils</artifactId>
-        </exclusion>
-      </exclusions>
+      <groupId>org.rnorth.visible-assertions</groupId>
+      <artifactId>visible-assertions</artifactId>
+      <version>2.1.0</version>
+      <scope>test</scope>
     </dependency>
 
-    <!--TDD-->
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
@@ -346,9 +335,28 @@
     <pluginManagement>
       <plugins>
         <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-jar-plugin</artifactId>
+          <version>3.0.2</version>
+        </plugin>
+        <plugin>
           <groupId>com.vaadin</groupId>
           <artifactId>vaadin-maven-plugin</artifactId>
           <version>${vaadin.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.flywaydb</groupId>
+          <artifactId>flyway-maven-plugin</artifactId>
+          <version>4.2.0</version>
+          <configuration>
+            <!--<driver>org.postgresql.Driver</driver>-->
+            <!--<url>jdbc:postgresql://localhost:5432/postgres</url>-->
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>com.speedment</groupId>
+          <artifactId>speedment-maven-plugin</artifactId>
+          <version>3.0.19</version>
         </plugin>
       </plugins>
 
@@ -363,8 +371,11 @@
 
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.20</version>
+        <version>2.19.1</version>
         <configuration>
+          <reuseForks>false</reuseForks>
+          <threadCount>4</threadCount>
+          <argLine>-Xms512m -Xmx512m</argLine>
           <includes>
             <include>**/*Test.java</include>
           </includes>
@@ -392,21 +403,32 @@
         </dependencies>
       </plugin>
 
-      <!--Persistence-->
-      <plugin>
-        <groupId>org.flywaydb</groupId>
-        <artifactId>flyway-maven-plugin</artifactId>
-        <version>${flyway.version}</version>
-      </plugin>
-
-      <plugin>
-        <groupId>com.speedment</groupId>
-        <artifactId>speedment-maven-plugin</artifactId>
-        <version>${speedment.version}</version>
-      </plugin>
 
     </plugins>
   </build>
 
+
+  <profiles>
+    <profile>
+      <id>docker_host_localhost</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <properties>
+        <docker.host.ip>127.0.0.1</docker.host.ip>
+        <docker.host.port>2375</docker.host.port>
+      </properties>
+    </profile>
+    <profile>
+      <id>docker_host_sru_dev_machine</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+      </activation>
+      <properties>
+        <docker.host.ip>192.168.0.100</docker.host.ip>
+        <docker.host.port>2375</docker.host.port>
+      </properties>
+    </profile>
+  </profiles>
 
 </project>

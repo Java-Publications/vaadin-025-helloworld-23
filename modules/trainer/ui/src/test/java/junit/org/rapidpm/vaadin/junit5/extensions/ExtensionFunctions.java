@@ -64,7 +64,8 @@ public class ExtensionFunctions {
         .filter(adr -> notStartsWith().apply(adr, "255.255.255.255"))
         .filter(adr -> notStartsWith().apply(adr, "0.0.0.0"))
         //            .filter(adr -> range(224, 240).noneMatch(nr -> adr.startsWith(valueOf(nr))))
-        .findFirst().orElse("localhost");
+        .findFirst()
+        .orElse("localhost");
   };
 
 

@@ -112,7 +112,7 @@
       <plugin>
         <groupId>com.github.webdriverextensions</groupId>
         <artifactId>webdriverextensions-maven-plugin</artifactId>
-        <version>3.1.2</version>
+        <version>3.1.3</version>
         <executions>
           <execution>
             <goals>
@@ -128,21 +128,21 @@
           <drivers>
             <driver>
               <name>chromedriver</name>
-              <platform>mac</platform>
-              <bit>64</bit>
-              <version>2.29</version>
+              <!--<platform>mac</platform>-->
+              <!--<bit>64</bit>-->
+              <!--<version>2.29</version>-->
             </driver>
             <driver>
               <name>operadriver</name>
-              <platform>mac</platform>
-              <bit>64</bit>
-              <version>0.2.2</version>
+              <!--<platform>mac</platform>-->
+              <!--<bit>64</bit>-->
+              <!--<version>0.2.2</version>-->
             </driver>
             <driver>
               <name>geckodriver</name>
-              <platform>mac</platform>
-              <bit>64</bit>
-              <version>0.16.0</version>
+              <!--<platform>mac</platform>-->
+              <!--<bit>64</bit>-->
+              <!--<version>0.16.0</version>-->
             </driver>
           </drivers>
         </configuration>

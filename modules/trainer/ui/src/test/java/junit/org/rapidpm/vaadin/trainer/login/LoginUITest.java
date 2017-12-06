@@ -37,7 +37,6 @@ public class LoginUITest {
 
     public Supplier<TextFieldElement> login = () -> textField().id(LoginComponent.ID_TEXTFIELD_LOGIN);
     public Supplier<PasswordFieldElement> password = () -> passwordField().id(LoginComponent.ID_PASSWORDFIELD_PASSWORD);
-
   }
 
 

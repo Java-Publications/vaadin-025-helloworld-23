@@ -7,14 +7,11 @@ import static org.rapidpm.vaadin.ComponentIDGenerator.passwordID;
 import static org.rapidpm.vaadin.ComponentIDGenerator.textfieldID;
 import static org.rapidpm.vaadin.server.SessionAttributes.SESSION_ATTRIBUTE_USER;
 
-import java.util.function.Supplier;
-
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
-import org.rapidpm.ddi.DI;
 import org.rapidpm.vaadin.trainer.api.property.PropertyService;
-import org.rapidpm.vaadin.trainer.api.security.login.LoginService;
+import org.rapidpm.microservice.security.login.LoginService;
 import org.rapidpm.vaadin.trainer.api.security.user.UserService;
 import org.rapidpm.vaadin.trainer.modules.mainview.MainView;
 import com.vaadin.server.VaadinSession;

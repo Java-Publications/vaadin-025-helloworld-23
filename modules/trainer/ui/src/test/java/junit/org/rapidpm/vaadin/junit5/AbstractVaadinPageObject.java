@@ -32,9 +32,6 @@ public abstract class AbstractVaadinPageObject
   }
 
   public WithID<TextFieldElement> textField() {
-
-    final String pageSource = getDriver().getPageSource();
-    System.out.println("pageSource = " + pageSource);
     return (id) -> $(TextFieldElement.class).id(id);
   }
 

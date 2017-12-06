@@ -13,8 +13,9 @@
   <packaging>pom</packaging>
   <modules>
     <module>api</module>
-    <module>ui</module>
     <module>backend</module>
+    <module>persistence</module>
+    <module>ui</module>
   </modules>
 
   <!--<properties>-->

@@ -48,7 +48,7 @@ public interface VaadinPageObject extends HasDriver {
   }
 
   default Supplier<String> url() {
-    return () -> baseURL().get() + webapp().get() + "/";
+    return () -> baseURL().get() + webapp().get() + "/" ;
   }
 
   default Supplier<String> urlRestartApp() {
